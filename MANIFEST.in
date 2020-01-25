@@ -1,0 +1,4 @@
+include LICENSE
+include README.md
+recursive-include modal_forms/static *
+recursive-include modal_forms/templates *
