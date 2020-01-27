@@ -13,7 +13,7 @@ setup(
     packages=find_packages(exclude=['example']),
     include_package_data=True,
     license='MIT License',
-    description='Django Modal Forms',
+    description='Django Forms in Bootstrap Modals',
     long_description=README,
     url='https://github.com/rickjordan/django-modal-forms',
     author='Rick Jordan',
