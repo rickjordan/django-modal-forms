@@ -78,7 +78,7 @@ $(document).ready(function() {
     }
 
     // setup and display modal form
-    $('.mf-btn').click(function() {
+    $('body').on('click', '.mf-btn', function() {
         var btn = $(this);
 
         var mf = new ModalForm();

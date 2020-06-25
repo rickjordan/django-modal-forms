@@ -1,0 +1,31 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>django-modal-forms</title>
+    
+    {% block style %}{% endblock %}
+</head>
+<body>
+    {% block body %}{% endblock %}
+    {% block script %}{% endblock %}
+
+	<!-- Modal Forms -->
+	<script src="{% static "modal_forms/js/script.js" %}"></script>
+	<input type="hidden" id="mf-url-base" value="/form-data">
+	
+{% if invalid_form %}
+	<input
+		type="hidden"
+		id="mf-error"
+		data-mf_name="{{ invalid_form.name }}"
+		data-mf_pk="{{ invalid_form.pk }}"
+	>
+{% endif %}
+</body>
+</html>

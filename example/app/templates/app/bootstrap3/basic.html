@@ -1,0 +1,268 @@
+{% extends 'app/base.html' %}
+
+{% block style %}
+    <!-- Bootstrap 3 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h2>Bootstrap 3 <small>Basic Example</small></h2>
+        <a href="/" class="btn btn-default btn-sm">
+            <span class="glyphicon glyphicon glyphicon-arrow-left"></span>
+            Back
+        </a>
+        <hr>
+        <div class="row">
+            <div class="col-sm-4">
+                <!-- Companies -->
+                <div class="clearfix">
+                    <h4 class="pull-left">Companies</h4>
+                    <button
+                        class="btn btn-default mf-btn pull-right"
+                        data-mf_name="CompanyForm"
+                        data-mf_pk="0"
+                    >
+                        <span class="glyphicon glyphicon-plus"></span>
+                        Add Company
+                    </button>
+                </div>
+                <div class="panel panel-default">
+                {% if companies %}
+                    <table class="table">
+                        <thead>
+                            <th>Name</th>
+                            <th></th>
+                        </thead>
+                        <tbody>
+                        {% for company in companies %}
+                            <tr>
+                                <td style="vertical-align: middle;">{{ company.name }}</td>
+                                <td class="text-right">
+                                    <button
+                                        class="btn btn-link mf-btn"
+                                        data-mf_name="CompanyForm"
+                                        data-mf_pk="{{ company.id }}"
+                                        title="Edit"
+                                    >
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <div class="panel-body">
+                        No companies.
+                    </div>
+                {% endif %}
+                </div>
+                <!-- Consoles -->
+                <div class="clearfix">
+                    <h4 class="pull-left">Consoles</h4>
+                    <button
+                        class="btn btn-default mf-btn pull-right"
+                        data-mf_name="ConsoleForm"
+                        data-mf_pk="0"
+                    >
+                        <span class="glyphicon glyphicon-plus"></span>
+                        Add Console
+                    </button>
+                </div>
+                <div class="panel panel-default">
+                {% if consoles %}
+                    <table class="table">
+                        <thead>
+                            <th>Company</th>
+                            <th>Name</th>
+                            <th></th>
+                        </thead>
+                        <tbody>
+                        {% for console in consoles %}
+                            <tr>
+                                <td style="vertical-align: middle;">{{ console.company }}</td>
+                                <td style="vertical-align: middle;">{{ console.name }}</td>
+                                <td class="text-right">
+                                    <button
+                                        class="btn btn-link mf-btn"
+                                        data-mf_name="ConsoleForm"
+                                        data-mf_pk="{{ console.id }}"
+                                        title="Edit"
+                                    >
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <div class="panel-body">
+                        No companies.
+                    </div>
+                {% endif %}
+                </div>
+            </div>
+            <!-- Games -->
+            <div class="col-sm-8">
+            {% for console in consoles %}
+                <div class="clearfix">
+                    <h4 class="pull-left">{{ console }}</h4>
+                    <button
+                        class="btn btn-default mf-btn pull-right"
+                        data-mf_name="GameForm"
+                        data-mf_pk="0"
+                        data-mf_defaults='{"console":"{{ console.id }}"}'
+                    >
+                        <span class="glyphicon glyphicon-plus"></span>
+                        Add Game
+                    </button>
+                </div>
+                <div class="panel panel-default table-responsive">
+                {% if console.games %}
+                    <table class="table">
+                        <thead>
+                            <th>Title</th>
+                            <th>Release Date</th>
+                            <th></th>
+                        </thead>
+                        <tbody>
+                        {% for game in console.games %}
+                            <tr>
+                                <td style="vertical-align: middle;">{{ game.title }}</td>
+                                <td style="vertical-align: middle;">{{ game.release_date|date:"Y-m-d" }}</td>
+                                <td class="text-right">
+                                    <button
+                                        class="btn btn-link mf-btn"
+                                        data-mf_name="GameForm"
+                                        data-mf_pk="{{ game.id }}"
+                                        title="Edit"
+                                    >
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <div class="panel-body">
+                        No games.
+                    </div>
+                {% endif %}
+                </div>
+            {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Company Form Modal -->
+    <div class="modal" id="mf-CompanyForm" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                    <h4 class="modal-title">
+                        <span class="mf-action-label"></span>
+                        Company
+                    </h4>
+                </div>
+
+                <form method="post" action="">
+                    {% csrf_token %}
+
+                    <input type="hidden" name="mf-name" value="company">
+                    <input type="hidden" name="mf-pk" value="">
+
+                    <div class="modal-body">
+                        {% include "modal_forms/bootstrap3/form_horizontal.html" with form=forms.company col_label=4 col_field=8 %}
+                    </div>
+
+                    <div class="modal-footer text-right">
+                        <button type="submit" class="btn btn-default">
+                            Submit
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Console Form Modal -->
+    <div class="modal" id="mf-ConsoleForm" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                    <h4 class="modal-title">
+                        <span class="mf-action-label"></span>
+                        Console
+                    </h4>
+                </div>
+
+                <form method="post" action="">
+                    {% csrf_token %}
+
+                    <input type="hidden" name="mf-name" value="console">
+                    <input type="hidden" name="mf-pk" value="">
+
+                    <div class="modal-body">
+                        {% include "modal_forms/bootstrap3/form_horizontal.html" with form=forms.console col_label=4 col_field=8 %}
+                    </div>
+
+                    <div class="modal-footer text-right">
+                        <button type="submit" class="btn btn-default">
+                            Submit
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Form Modal -->
+    <div class="modal" id="mf-GameForm" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                    <h4 class="modal-title">
+                        <span class="mf-action-label"></span>
+                        Game
+                    </h4>
+                </div>
+
+                <form method="post" action="">
+                    {% csrf_token %}
+
+                    <input type="hidden" name="mf-name" value="game">
+                    <input type="hidden" name="mf-pk" value="">
+
+                    <div class="modal-body">
+                        {% include "modal_forms/bootstrap3/form_horizontal.html" with form=forms.game col_label=4 col_field=8 %}
+                    </div>
+
+                    <div class="modal-footer text-right">
+                        <button type="submit" class="btn btn-default">
+                            Submit
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <!-- Bootstrap 3 -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+{% endblock %}

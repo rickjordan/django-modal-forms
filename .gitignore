@@ -1,6 +1,7 @@
 db.sqlite3
 *.pyc
 
+.vscode/
 build/
 dist/
 egg/

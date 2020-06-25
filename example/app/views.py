@@ -11,6 +11,17 @@ def get_form_data(request, name, pk=None):
     return HttpResponse(data)
 
 def index(request):
+    return render(request, 'app/index.html', {})
+
+# EXAMPLES
+
+def bootstrap4_basic(request):
+    pass
+
+def bootstrap4_datatables(request):
+    pass
+
+def bootstrap3_basic(request):
     companies = models.Company.objects.all().order_by('name')
     consoles = models.Console.objects.all().order_by('company__name', 'name')
     invalid_form = None
@@ -39,4 +50,33 @@ def index(request):
         'companies': companies,
         'consoles': consoles,
     }
-    return render(request, 'app/index.html', context)
+
+    return render(request, 'app/bootstrap3/basic.html', context)
+
+def bootstrap3_datatables(request):
+    games = models.Game.objects.all()
+    invalid_form = None
+
+    page_forms = {
+        'game': forms.GameForm(auto_id="GameForm_%s"),
+    }
+    
+    # handle form submission
+    if request.POST:
+        name = request.POST.get('mf-name', None)
+        pk = request.POST.get('mf-pk', None)
+
+        mf = ModalForm(page_forms[name], request, pk)
+        is_valid = mf.process_form()
+
+        if not is_valid:
+            page_forms[name] = mf.bound_form
+            invalid_form = mf.get_signature()
+
+    context = {
+        'forms': page_forms,
+        'invalid_form': invalid_form,
+        'games': games,
+    }
+
+    return render(request, 'app/bootstrap3/datatables.html', context)
