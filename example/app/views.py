@@ -15,13 +15,7 @@ def index(request):
 
 # EXAMPLES
 
-def bootstrap4_basic(request):
-    pass
-
-def bootstrap4_datatables(request):
-    pass
-
-def bootstrap3_basic(request):
+def basic_example(request, bs_version):
     companies = models.Company.objects.all().order_by('name')
     consoles = models.Console.objects.all().order_by('company__name', 'name')
     invalid_form = None
@@ -51,9 +45,9 @@ def bootstrap3_basic(request):
         'consoles': consoles,
     }
 
-    return render(request, 'app/bootstrap3/basic.html', context)
+    return render(request, 'app/bootstrap{}/basic.html'.format(bs_version), context)
 
-def bootstrap3_datatables(request):
+def datatables(request, bs_version):
     games = models.Game.objects.all()
     invalid_form = None
 
@@ -79,4 +73,4 @@ def bootstrap3_datatables(request):
         'games': games,
     }
 
-    return render(request, 'app/bootstrap3/datatables.html', context)
+    return render(request, 'app/bootstrap{}/datatables.html'.format(bs_version), context)

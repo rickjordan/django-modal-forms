@@ -1,18 +1,18 @@
 {% load widget_tweaks %}
 
 {% if form.non_field_errors %}
-	{% for error in form.non_field_errors %}
+    {% for error in form.non_field_errors %}
         <div class="alert alert-danger">
-            <p class="text-danger">{{ error }}</p>
+            {{ error }}
         </div>
-	{% endfor %}
+    {% endfor %}
 {% endif %}
 
 {% for hidden_field in form.hidden_fields %}
     {{ hidden_field }}
     {% for error in hidden_field.errors %}
-	    <div class="alert alert-danger">
-            <p class="text-danger">{{ hidden_field.label }}: {{ error }}</p>
+        <div class="alert alert-danger">
+            {{ hidden_field.label }}: {{ error }}
         </div>
     {% endfor %}
 {% endfor %}
@@ -32,23 +32,26 @@
                 <label>
                     {% render_field field %}
                 {% if field.help_text %}
+                    <br>
                     <span class="help-block">{{ field.help_text }}</span>
                 {% endif %}
                 </label>
             </div>
     {% else %}
-	    {% if field|widget_type == "dateinput" %}
+        {% if field|widget_type == "dateinput" %}
             {% render_field field class="form-control datepicker" autocomplete="off" %}
         {% else %}
             {% render_field field class="form-control" %}
         {% endif %}
 
         {% if field.help_text %}
-            <p class="help-block">{{ field.help_text }}</p>
+            <br>
+            <span class="help-block">{{ field.help_text }}</span>
         {% endif %}
     {% endif %}
         {% for error in field.errors %}
-            <p class="text-danger">{{ error }}</p>
+            <br>
+            <span class="text-danger">{{ error }}</span>
         {% endfor %}
         </div>
     </div>

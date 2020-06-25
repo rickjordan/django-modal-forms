@@ -20,6 +20,7 @@ class Game(models.Model):
     title = models.CharField(max_length=128)
     release_date = models.DateField()
     console = models.ForeignKey(Console, on_delete=models.CASCADE)
+    owned = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title

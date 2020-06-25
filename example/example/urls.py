@@ -9,8 +9,6 @@ urlpatterns = [
     path('form-data/<name>/<int:pk>', views.get_form_data),
 
     path('', views.index),
-    path('bootstrap4/basic', views.bootstrap4_basic),
-    path('bootstrap4/datatables', views.bootstrap4_datatables),
-    path('bootstrap3/basic', views.bootstrap3_basic),
-    path('bootstrap3/datatables', views.bootstrap3_datatables),
+    path('bootstrap/<int:bs_version>/basic', views.basic_example),
+    path('bootstrap/<int:bs_version>/datatables', views.datatables),
 ]

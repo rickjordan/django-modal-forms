@@ -1,13 +1,22 @@
 {% extends 'app/base.html' %}
 
+{% block style %}
+    <!-- Bootstrap 4 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+{% endblock %}
+
 {% block body %}
-    <h1>django-modal-forms</h1>
-    <hr>
-    <h2>Bootstrap 4</h2>
-    <p><a href="bootstrap4/basic">Basic Example</a></p>
-    <p><a href="bootstrap4/datatables">DataTables</a></p>
-    <hr>
-    <h2>Bootstrap 3</h2>
-    <p><a href="bootstrap3/basic">Basic Example</a></p>
-    <p><a href="bootstrap3/datatables">DataTables</a></p>
+    <div class="container pt-3">
+        <h2>django-modal-forms</h2>
+        <hr>
+        <h4>Bootstrap 4</h4>
+        <a href="bootstrap/4/basic">Basic Example</a>
+        <br>
+        <a href="bootstrap/4/datatables">DataTables</a>
+        <hr>
+        <h4>Bootstrap 3</h4>
+        <a href="bootstrap/3/basic">Basic Example</a>
+        <br>
+        <a href="bootstrap/3/datatables">DataTables</a>
+    </div>
 {% endblock %}

@@ -1,0 +1,117 @@
+{% extends 'app/base.html' %}
+
+{% block style %}
+    <!-- Bootstrap 4 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
+{% endblock %}
+
+{% block body %}
+    <div class="container pt-3">
+        <h2>Bootstrap 4 <small class="text-muted">DataTables</small></h2>
+        <a href="/" class="btn btn-outline-secondary btn-sm">
+            <span class="fa fa-arrow-left"></span>
+            Back
+        </a>
+        <hr>
+        <table id="dt-games" class="table table-striped table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Company</th>
+                    <th>Console</th>
+                    <th>Title</th>
+                    <th>Release Date</th>
+                    <th class="text-center">
+                        <a
+                            href="#"
+                            class="mf-btn"
+                            data-mf_name="GameForm"
+                            data-mf_pk="0"
+                        >
+                            <span class="fa fa-plus"></span>
+                        </a>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for game in games %}
+                <tr>
+                    <td>{{ game.console.company.name }}</td>
+                    <td>{{ game.console.name }}</td>
+                    <td>{{ game.title }}</td>
+                    <td>{{ game.release_date|date:"Y-m-d" }}</td>
+                    <td class="text-center">
+                        <a
+                            href="#"
+                            class="mf-btn"
+                            data-mf_name="GameForm"
+                            data-mf_pk="{{ game.id }}"
+                            title="Edit"
+                        >
+                            <span class="fa fa-pencil"></span>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Game Form Modal -->
+    <div class="modal" id="mf-GameForm" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <span class="mf-action-label"></span>
+                        Game
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+
+                <form method="post" action="">
+                    {% csrf_token %}
+
+                    <input type="hidden" name="mf-name" value="game">
+                    <input type="hidden" name="mf-pk" value="">
+
+                    <div class="modal-body">
+                        {% include "modal_forms/bootstrap4/form_horizontal.html" with form=forms.game col_label=4 col_field=8 %}
+                    </div>
+
+                    <div class="modal-footer text-right">
+                        <button type="submit" class="btn btn-outline-secondary">
+                            Submit
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <!-- DataTables -->
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#dt-games').DataTable({
+                'columnDefs': [{
+                    'targets': 4,
+                    'orderable': false
+                }]
+            });
+        });
+    </script>
+{% endblock %}

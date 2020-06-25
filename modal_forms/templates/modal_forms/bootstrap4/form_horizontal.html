@@ -1,0 +1,59 @@
+{% load widget_tweaks %}
+
+{% if form.non_field_errors %}
+    {% for error in form.non_field_errors %}
+        <div class="alert alert-danger">
+            {{ error }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+{% for hidden_field in form.hidden_fields %}
+    {{ hidden_field }}
+    {% for error in hidden_field.errors %}
+        <div class="alert alert-danger">
+            {{ hidden_field.label }}: {{ error }}
+        </div>
+    {% endfor %}
+{% endfor %}
+
+{% for field in form.visible_fields %}
+    <div class="form-group row">
+        <div class="col-sm-{{ col_label }} text-right">
+            <label for="{{ field.id_for_label }}" class="col-form-label">
+            {% if field.field.required %}
+                <span class="text-danger">*</span>
+            {% endif %}
+                <strong>{{ field.label }}:</strong>
+            </label>
+        </div>
+        <div class="form-inline col-sm-{{ col_field }}">
+    {% if field|widget_type == "checkboxinput" %}
+            <div class="form-check">
+                <label>
+                    {% render_field field %}
+                </label>
+            {% if field.help_text %}
+                <br>
+                <span class="help-block">{{ field.help_text }}</span>
+            {% endif %}
+            </div>
+    {% else %}
+        {% if field|widget_type == "dateinput" %}
+            {% render_field field class="form-control datepicker" autocomplete="off" %}
+        {% else %}
+            {% render_field field class="form-control" %}
+        {% endif %}
+
+        {% if field.help_text %}
+            <br>
+            <span class="help-block">{{ field.help_text }}</span>
+        {% endif %}
+    {% endif %}
+        {% for error in field.errors %}
+            <br>
+            <span class="text-danger">{{ error }}</span>
+        {% endfor %}
+        </div>
+    </div>
+{% endfor %}

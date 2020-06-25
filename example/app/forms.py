@@ -35,6 +35,7 @@ class GameForm(forms.ModelForm):
             'console',
             'title',
             'release_date',
+            'owned',
         ]
         widgets = {
             'release_date': forms.TextInput(
