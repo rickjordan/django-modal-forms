@@ -2,7 +2,7 @@
 
 {% if form.non_field_errors %}
     {% for error in form.non_field_errors %}
-        <div class="alert alert-danger">
+        <div class="alert alert-danger mf-error">
             {{ error }}
         </div>
     {% endfor %}
@@ -11,7 +11,7 @@
 {% for hidden_field in form.hidden_fields %}
     {{ hidden_field }}
     {% for error in hidden_field.errors %}
-        <div class="alert alert-danger">
+        <div class="alert alert-danger mf-error">
             {{ hidden_field.label }}: {{ error }}
         </div>
     {% endfor %}
@@ -50,8 +50,8 @@
         {% endif %}
     {% endif %}
         {% for error in field.errors %}
-            <br>
-            <span class="text-danger">{{ error }}</span>
+            <br class="mf-error">
+            <span class="text-danger mf-error">{{ error }}</span>
         {% endfor %}
         </div>
     </div>
