@@ -10,16 +10,17 @@ class ModalForm:
         self.auto_id_format = "{}_%s"
         self.date_format = "%m/%d/%Y"
         
-        self.instance = None
-        self.bound_form = None
-        
         # setup model instance
-        model = form.Meta.model
+        self.instance = None
         
-        if pk and pk != "0":
-            self.instance = model.objects.get(id=pk) # get existing
-        else:
-            self.instance = model() # create new
+        if pk and pk != "0": # get existing
+            self.instance = form.Meta.model.objects.get(id=pk)
+        else: # create new
+            self.instance = form.Meta.model()
+
+        # setup form instance
+        self.bound_form = self.form(self.request.POST,
+            instance=self.instance, auto_id=self.get_auto_id())
 
     def get_auto_id(self):
         return self.auto_id_format.format(self.name)
@@ -31,10 +32,6 @@ class ModalForm:
         }
         
     def process_form(self, commit=True):
-        # setup form instance
-        self.bound_form = self.form(self.request.POST,
-            instance=self.instance, auto_id=self.get_auto_id())
-
         # validate form & save instance
         if self.bound_form.is_valid():
             self.instance = self.bound_form.save(commit=commit)
