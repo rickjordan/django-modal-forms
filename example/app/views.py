@@ -4,7 +4,7 @@ from modal_forms import ModalForm
 from . import models, forms
 
 def get_form_data(request, name, pk=None):
-    form = getattr(forms, name)() # instantiated
+    form = getattr(forms, name)()
     mf = ModalForm(form, request, pk)
     mf.date_format = "%Y-%m-%d"
     data = mf.serialize_form()
@@ -32,11 +32,7 @@ def basic_example(request, bs_version):
         pk = request.POST.get('mf-pk', None)
 
         mf = ModalForm(page_forms[name], request, pk)
-        is_valid = mf.process_form()
-
-        if not is_valid:
-            page_forms[name] = mf.bound_form
-            invalid_form = mf.get_signature()
+        page_forms[name], invalid_form = mf.process_form()
 
     context = {
         'forms': page_forms,
@@ -61,11 +57,7 @@ def datatables(request, bs_version):
         pk = request.POST.get('mf-pk', None)
 
         mf = ModalForm(page_forms[name], request, pk)
-        is_valid = mf.process_form()
-
-        if not is_valid:
-            page_forms[name] = mf.bound_form
-            invalid_form = mf.get_signature()
+        page_forms[name], invalid_form = mf.process_form()
 
     context = {
         'forms': page_forms,

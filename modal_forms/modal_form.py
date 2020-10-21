@@ -10,14 +10,17 @@ class ModalForm:
         self.auto_id_format = "{}_%s"
         self.date_format = "%m/%d/%Y"
         
-        # setup model instance
         self.instance = None
-        
+        self.bound_form = None
+        self.invalid_form = None
+        self.is_valid = False
+
+        # setup model instance
         if pk and pk != "0": # get existing
             self.instance = form.Meta.model.objects.get(id=pk)
         else: # create new
             self.instance = form.Meta.model()
-
+            
         # setup form instance
         self.bound_form = self.form(self.request.POST,
             instance=self.instance, auto_id=self.get_auto_id())
@@ -30,14 +33,16 @@ class ModalForm:
             'name': self.name,
             'pk': self.instance.id if self.instance.id else 0,
         }
-        
+
     def process_form(self, commit=True):
         # validate form & save instance
         if self.bound_form.is_valid():
             self.instance = self.bound_form.save(commit=commit)
-            return True # valid
-
-        return False # invalid
+            self.is_valid = True
+        else:
+            self.invalid_form = self.get_signature()
+            
+        return self.bound_form, self.invalid_form
 
     def serialize_form(self):
         form = self.form(instance=self.instance, auto_id=self.get_auto_id())
