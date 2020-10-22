@@ -1,9 +1,9 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from modal_forms import ModalForm
-from . import models, forms
+from . import forms, models
 
-def get_form_data(request, name, pk=None):
+def mf_data(request, name, pk=None):
     form = getattr(forms, name)()
     mf = ModalForm(form, request, pk)
     mf.date_format = "%Y-%m-%d"
