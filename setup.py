@@ -15,6 +15,7 @@ setup(
     license='MIT License',
     description='Django Forms in Bootstrap Modals',
     long_description=README,
+    long_description_content_type='text/markdown',
     url='https://github.com/rickjordan/django-modal-forms',
     author='Rick Jordan',
     author_email='jordan.rick.d@gmail.com',

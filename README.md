@@ -215,7 +215,7 @@ $ pip install dist/django-modal-forms-[VERSION].tar.gz [--upgrade]
 
 - Uploading package to PyPI:
 ```
-$ twine upload dist/*
+$ twine upload --skip-existing dist/*
 ```
 
 ## References
