@@ -18,12 +18,12 @@
 
 	<!-- Modal Forms -->
 	<script src="{% static "modal_forms/js/script.js" %}"></script>
-	<input type="hidden" id="mf-url-base" value="/form-data">
+	<input type="hidden" id="mf-url-base" value="/mf-data">
 	
 {% if invalid_form %}
 	<input
 		type="hidden"
-		id="mf-error"
+		id="mf-invalid"
 		data-mf_name="{{ invalid_form.name }}"
 		data-mf_pk="{{ invalid_form.pk }}"
 	>

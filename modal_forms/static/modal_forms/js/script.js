@@ -5,7 +5,7 @@ function ModalForm() {
     this.defaults = {};
     this.excluded = new Set();
 
-    this.setFieldValues = function() {
+    this.setFieldValues = function(onSuccess) {
         // get form field values by form name & pk
         var url = this.urlBase + "/" + this.name + (this.pk ? "/" + this.pk : "");
         var mf = this;
@@ -46,11 +46,11 @@ function ModalForm() {
                 }
             }
 
-            mf.displayModal();
+            onSuccess();
         });
     }
 
-    this.displayModal = function() {
+    this.displayModal = function(invalid = false) {
         var modal = $('#mf-' + this.name );
         
         // set action label
@@ -59,6 +59,23 @@ function ModalForm() {
     
         // set hidden pk field
         modal.find('input[name="mf-pk"]').val(this.pk);
+
+        if (invalid) {
+            // display warning on modal close
+            function displayWarning(e) {
+                var close = confirm("Form data has not been saved... are you sure you want to close this form?");
+                if (close) {
+                    modal.off('hide.bs.modal', displayWarning);
+                } else {
+                    e.preventDefault();
+                }
+            }
+
+            modal.on('hide.bs.modal', displayWarning);
+        } else {
+            // clear previous error state
+            $('.mf-error').remove();
+        }
     
         // display modal
         modal.modal('show');
@@ -67,14 +84,14 @@ function ModalForm() {
 
 $(document).ready(function() {
     var urlBase = $('#mf-url-base').val();
-    var error = $('#mf-error');
+    var invalid = $('#mf-invalid');
 
-    // display modal if submitted form has errors
-    if (error.length) {
+    // display modal if submitted form is invalid
+    if (invalid.length) {
         var mf = new ModalForm();
-        mf.name = error.data('mf_name');
-        mf.pk = error.data('mf_pk');
-        mf.displayModal();
+        mf.name = invalid.data('mf_name');
+        mf.pk = invalid.data('mf_pk');
+        mf.displayModal(true);
     }
 
     // setup and display modal form
@@ -86,16 +103,20 @@ $(document).ready(function() {
         mf.name = btn.data('mf_name');
         mf.pk = btn.data('mf_pk');
 
+        // default values
         var defaults = btn.data('mf_defaults');
         if (defaults) {
             mf.defaults = btn.data('mf_defaults');
         }
 
+        // excluded values
         var excluded = btn.data('mf_excluded');
         if (excluded) {
             mf.excluded = new Set(excluded);
         }
 
-        mf.setFieldValues();
+        mf.setFieldValues(function() {
+            mf.displayModal();
+        });
     });
 });
