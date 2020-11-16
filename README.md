@@ -68,7 +68,7 @@ def mf_data(request, name, pk=None):
 {% if invalid_form %}
 <input
     type="hidden"
-    id="mf-error"
+    id="mf-invalid"
     data-mf_name="{{ invalid_form.name }}"
     data-mf_pk="{{ invalid_form.pk }}"
 >
