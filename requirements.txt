@@ -14,7 +14,7 @@ jeepney==0.4.2
 keyring==21.1.0
 pkginfo==1.5.0.1
 pycparser==2.19
-Pygments==2.5.2
+Pygments==2.7.4
 pytz==2019.3
 readme-renderer==24.0
 requests==2.22.0
